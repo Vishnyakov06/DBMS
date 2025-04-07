@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>О разработчике</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cae;
+            --accent-color: #ff7e5f;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .developer-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .developer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .developer-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .developer-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 3px solid var(--accent-color);
+        }
+
+        .developer-info h2 {
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+        }
+
+        .developer-title {
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .developer-bio {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .skills-section {
+            margin-top: 25px;
+        }
+
+        .skills-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 25px;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-icon {
+            margin-right: 10px;
+            color: var(--accent-color);
+            width: 20px;
+            text-align: center;
+        }
+
+        .contact-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        @media (max-width: 768px) {
+            .developer-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .developer-avatar {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>О разработчике</h1>
+
+    <div class="developer-card">
+        <div class="developer-header">
+            <img src="hood.jpg" alt="Фото разработчика" class="developer-avatar">
+            <div class="developer-info">
+                <h2>Вишняков Даниил Иванович</h2>
+                <p class="developer-title">Back-end разработчик</p>
+            </div>
+        </div>
+
+        <div class="developer-bio">
+            <p>Привет! Я разработчик этой системы управления базой данных.</p>
+        </div>
+
+        <div class="skills-section">
+            <h3 class="skills-title">Ключевые навыки:</h3>
+            <div class="skills-list">
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Spring Boot</span>
+                <span class="skill-tag">PostgreSQL</span>
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Thymeleaf</span>
+            </div>
+        </div>
+
+        <ul class="contact-list">
+            <li class="contact-item">
+                <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                <a href="danya.vishnyakov.2006@mail.ru" class="contact-link">danya.vishnyakov.2006@mail.ru</a>
+            </li>
+            <li class="contact-item">
+                <span class="contact-icon"><i class="fab fa-github"></i></span>
+                <a href="https://github.com/Vishnyakov06" target="_blank" class="contact-link">https://github.com/Vishnyakov06</a>
+            </li>
+
+
+        </ul>
+    </div>
+
+    <a href="/" class="back-link">← На главную</a>
+</div>
+</body>
+</html>

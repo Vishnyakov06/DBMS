@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cae;
+            --accent-color: #ff7e5f;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --success-color: #2ecc71;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --dev-mode-color: #ff4757;
+        }
+        .dev-link {
+            display: none; /* По умолчанию скрываем dev-ссылки */
+        }
+
+        body.dev-mode .dev-link {
+            display: block; /* Показываем в режиме разработчика */
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-item h2 {
+            color: var(--secondary-color);
+            font-weight: 500;
+            font-size: 1.5rem;
+            padding: 15px 25px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .menu-item h2:hover {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px 0;
+            min-width: 250px;
+            box-shadow: var(--box-shadow);
+            z-index: 100;
+            margin-top: 10px;
+            transition: var(--transition);
+            left: 0;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .menu-item::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 20px;
+        }
+
+        .submenu a {
+            display: block;
+            padding: 10px 25px;
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .submenu a:hover {
+            color: var(--light-text);
+            background-color: var(--primary-color);
+        }
+
+        /* Стили для кнопки переключения режима */
+        .mode-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .mode-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Стили для режима разработчика */
+        body.dev-mode {
+            --primary-color: #ff4757;
+            --secondary-color: #ff6b81;
+            background-color: #f8f9fa;
+        }
+
+        body.dev-mode .container::before {
+            content: "Режим разработчика";
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--dev-mode-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+
+        /* Скрытые элементы в пользовательском режиме */
+        .dev-only {
+            display: none;
+        }
+
+        body.dev-mode .dev-only {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .menu-item h2 {
+                padding: 12px 20px;
+            }
+
+            .submenu {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+                border: 1px solid #eee;
+                display: none;
+            }
+
+            .menu-item.active .submenu {
+                display: block;
+            }
+
+            .mode-switcher {
+                position: static;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="mode-switcher">
+        <button class="mode-btn" id="modeToggle">Режим разработчика</button>
+    </div>
+
+    <h1>Управление базой данных</h1>
+
+    <div class="menu">
+        <div class="menu-item">
+            <h2>Справочники</h2>
+            <div class="submenu">
+                <a th:href="@{/tables/reference}">Показать все справочники</a>
+                <a th:href="@{/dev/edit/tables/reference}" class="dev-only dev-link">Редактировать справочники</a>
+                <a th:href="@{/dev/create/tables/reference}" class="dev-only dev-link">Создать новые справочники</a>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <h2>Данные</h2>
+            <div class="submenu">
+                <a th:href="@{/tables/data}">Показать все таблицы</a>
+                <a th:href="@{/dev/edit/tables/data}" class="dev-only dev-link">Редактировать данные</a>
+                <a th:href="@{/dev/create/tables/data}" class="dev-only dev-link">Создать новые данные</a>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <h2>Отчеты</h2>
+            <div class="submenu">
+                <a th:href="@{/tables/reports}">Показать отчеты</a>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <h2>О программе</h2>
+            <div class="submenu">
+                <a th:href="@{/about}">Информация</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const modeToggle = document.getElementById('modeToggle');
+    const devLinks = document.querySelectorAll('.dev-link');
+
+    // Функция для переключения видимости dev-ссылок
+    function toggleDevLinks(show) {
+        devLinks.forEach(link => {
+            link.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    // Инициализация состояния из localStorage
+    const isDevMode = localStorage.getItem('devMode') === 'true';
+    if (isDevMode) {
+        document.body.classList.add('dev-mode');
+        modeToggle.textContent = 'Пользовательский режим';
+        toggleDevLinks(true);
+    } else {
+        toggleDevLinks(false);
+    }
+
+    // Обработчик переключения режима
+    modeToggle.addEventListener('click', function() {
+        const isNowDevMode = !document.body.classList.contains('dev-mode');
+
+        document.body.classList.toggle('dev-mode');
+        this.textContent = isNowDevMode ? 'Пользовательский режим' : 'Режим разработчика';
+        toggleDevLinks(isNowDevMode);
+
+        localStorage.setItem('devMode', isNowDevMode);
+    });
+
+    // Адаптивное меню для мобильных
+    if (window.innerWidth <= 768) {
+        const menuItems = document.querySelectorAll('.menu-item h2');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                this.parentElement.classList.toggle('active');
+            });
+        });
+    }
+});
+</script>
+</body>
+</html>

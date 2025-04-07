@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список таблиц</title>
+    <style>
+        :root {
+            --primary-color: #ff4757;  /* Красный вместо синего */
+            --secondary-color: #ff6b81; /* Более светлый красный */
+            --accent-color: #ff6348;    /* Коралловый */
+            --light-bg: #fff5f5;        /* Очень светлый красный фон */
+            --dark-text: #2d3436;       /* Темный текст для контраста */
+            --light-text: #f1f2f6;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .table-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .table-item {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            overflow: hidden;
+            border: 1px solid #ffecec; /* Легкая красная граница */
+        }
+
+        .table-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 71, 87, 0.15); /* Красная тень */
+            border-color: var(--primary-color);
+        }
+
+        .table-link {
+            display: block;
+            padding: 15px 20px;
+            color: var(--dark-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .table-link:hover {
+            color: var(--primary-color);
+            background-color: #fff0f0; /* Очень светлый красный */
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 71, 87, 0.2);
+        }
+
+        .menu-type {
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Дополнительные акценты */
+        .table-item:nth-child(odd) {
+            background-color: #fffafa; /* Чуть более красный фон для нечетных */
+        }
+
+        @media (max-width: 768px) {
+            .table-list {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Список таблиц (<span class="menu-type" th:text="${menuType}"></span>)</h1>
+
+    <ul class="table-list">
+        <li class="table-item" th:each="table : ${tables}">
+            <a class="table-link" th:href="@{/dev/edit/tables/reference/{name}(name=${table})}" th:text="${table}"></a>
+        </li>
+    </ul>
+    <a href="/" class="back-link">← На главную</a>
+</div>
+</body>
+</html>

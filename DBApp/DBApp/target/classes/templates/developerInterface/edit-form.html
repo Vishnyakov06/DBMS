@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование</title>
+</head>
+<body>
+<div class="container">
+    <h1>Редактирование <span th:text="${tableName}"></span></h1>
+
+    <form th:action="@{'/dev/edit/tables/{type}/' + ${tableName} + '/update'}" method="post">
+        <input type="hidden" th:name="${idColumn}" th:value="${record.get(idColumn)}">
+        <div th:each="col : ${record.keySet()}" th:unless="${col == idColumn}">
+            <label th:text="${col}"></label>
+            <input type="text" th:name="${col}" th:value="${record.get(col)}">
+        </div>
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Создание записи</title>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Создание записи в таблице <span th:text="${tableName}"></span></h1>
+  <form th:action="@{'/dev/edit/tables/reference/' + ${tableName} + '/create'}" method="post">
+    <div th:each="col : ${record.keySet()}" th:unless="${col == idColumn}" class="form-group">
+      <label th:text="${col}"></label>
+      <input type="text" th:name="${col}" th:value="${record.get(col)}">
+    </div>
+    <button type="submit">Сохранить</button>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчеты</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cae;
+            --accent-color: #ff7e5f;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --success-color: #2ecc71;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin: 30px 0 15px;
+            font-size: 1.5rem;
+        }
+
+        .summary {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: var(--box-shadow);
+            border-left: 4px solid var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .summary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .summary p {
+            font-size: 1.2rem;
+            margin: 0;
+            color: var(--dark-text);
+        }
+
+        .summary span {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            font-weight: 500;
+            padding: 15px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            background-color: white;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f5f7fa;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f8f9fa;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            margin-right: 10px;
+        }
+
+        .back-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            color: #666;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Финансовые и материальные отчеты</h1>
+
+    <div class="summary" th:if="${sumData != null and !sumData.empty}">
+        <h2>Общие финансовые показатели</h2>
+        <p>Общая сумма расходов: <span th:text="${#numbers.formatDecimal(sumData[0].SUMMA, 1, 2, 'COMMA')}"></span> руб.</p>
+    </div>
+
+    <h2>Учет материалов</h2>
+    <table th:if="${countData != null and !countData.empty}">
+        <thead>
+        <tr>
+            <th>Наименование материала</th>
+            <th>Получено</th>
+            <th>Остаток</th>
+            <th>Израсходовано</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${countData}">
+            <td th:text="${row.Material_Name}"></td>
+            <td th:text="${#numbers.formatDecimal(row.Total_Received, 1, 2, 'COMMA')}"></td>
+            <td th:text="${#numbers.formatDecimal(row.Total_Remaining, 1, 2, 'COMMA')}"></td>
+            <td th:text="${#numbers.formatDecimal(row.Total_Spent, 1, 2, 'COMMA')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="no-data" th:if="${countData == null or countData.empty}">
+        <p>Нет данных по материалам</p>
+    </div>
+
+    <a href="/" class="back-link">← На главную</a>
+</div>
+</body>
+</html>
